@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-service
+  namespace: piggymetricss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-service
+  template:
+    metadata:
+      labels:
+        app: account-service
+    spec:
+      initContainers:
+      - name: wait-for-config
+        image: busybox:1.35
+        command: ['sh', '-c', 'until nc -z config-service 8888; do echo waiting for config; sleep 5; done']
+      - name: wait-for-mongodb
+        image: busybox:1.35
+        command: ['sh', '-c', 'until nc -z account-mongodb.piggymetricss.svc.cluster.local 27017; do echo waiting for mongodb; sleep 5; done']
+      containers:
+      - name: account-service
+        image: asha515/piggymetrics-account-service:20251127-140202-aec37ed
+        ports:
+        - containerPort: 6000
+        env:
+        - name: CONFIG_SERVICE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: piggymetrics-config
+              key: CONFIG_SERVICE_PASSWORD
+        - name: ACCOUNT_SERVICE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: piggymetrics-config
+              key: ACCOUNT_SERVICE_PASSWORD
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: piggymetrics-config
+              key: MONGODB_PASSWORD
+        readinessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 90
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          tcpSocket:
+            port: 6000
+          initialDelaySeconds: 120
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-service
+  namespace: piggymetricss
+spec:
+  selector:
+    app: account-service
+  ports:
+  - port: 6000
+    targetPort: 6000
+  type: ClusterIP

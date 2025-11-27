@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-service
+  namespace: piggymetricss
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-service
+  template:
+    metadata:
+      labels:
+        app: config-service
+    spec:
+      containers:
+      - name: config-service
+        image: asha515/piggymetrics-config-service:20251127-140202-aec37ed
+        ports:
+        - containerPort: 8888
+        env:
+        - name: CONFIG_SERVICE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: piggymetrics-config
+              key: CONFIG_SERVICE_PASSWORD
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8888
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          timeoutSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8888
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 3
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-service
+  namespace: piggymetricss
+spec:
+  selector:
+    app: config-service
+  ports:
+  - port: 8888
+    targetPort: 8888
+  type: ClusterIP
