@@ -32,14 +32,14 @@ spec:
           httpGet:
             path: /
             port: 8761
-          initialDelaySeconds: 90
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
         livenessProbe:
           httpGet:
             path: /
             port: 8761
-          initialDelaySeconds: 180
+          initialDelaySeconds: 240
           periodSeconds: 30
           timeoutSeconds: 5
 
