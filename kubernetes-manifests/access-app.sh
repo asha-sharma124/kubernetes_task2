@@ -1,12 +1,11 @@
 #!/bin/bash
 
+# Auto-reconnect port-forwards
+while true; do kubectl port-forward svc/gateway 7070:80 -n piggymetricss; sleep 2; done &
 
+while true; do kubectl port-forward -n argocd service/argocd-server 8443:443; sleep 2; done &
 
-kubectl port-forward svc/gateway 7070:80 -n piggymetricss &
-
-kubectl port-forward -n argocd service/argocd-server 8443:443 &
-
-kubectl port-forward svc/argo-server -n argo 2746:2746 &
+while true; do kubectl port-forward svc/argo-server -n argo 2746:2746; sleep 2; done &
 #kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 #K0-sIzxqw8dzgN44
 #kubectl rollout restart deployment argocd-repo-server -n argocd
