@@ -22,7 +22,7 @@ spec:
         command: ['sh', '-c', 'until nc -z statistics-mongodb.piggymetricss.svc.cluster.local 27017; do echo waiting for mongodb; sleep 5; done']
       containers:
       - name: statistics-service
-        image: asha515/piggymetrics-statistics-service:20251130-102929-1ebdf20
+        image: asha515/piggymetrics-statistics-service:20251130-103318-bd4f98d
         ports:
         - containerPort: 7000
         env:
