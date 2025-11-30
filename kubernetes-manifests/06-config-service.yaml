@@ -24,6 +24,13 @@ spec:
             configMapKeyRef:
               name: piggymetrics-config
               key: CONFIG_SERVICE_PASSWORD
+        resources:
+         requests:
+            memory: "512Mi"
+            cpu: "500m"
+         limits:
+            memory: "1Gi"
+            cpu: "1000m"
         readinessProbe:
           httpGet:
             path: /actuator/health
