@@ -13,6 +13,10 @@ spec:
       labels:
         app: monitoring
     spec:
+      initContainers:
+      - name: wait-for-config
+        image: busybox:1.35
+        command: ['sh', '-c', 'until nc -z config-service 8888; do echo waiting for config; sleep 5; done']
       containers:
       - name: monitoring
         image: asha515/piggymetrics-monitoring:20251127-140202-aec37ed

@@ -1,4 +1,5 @@
-FROM java:8-jre
+FROM eclipse-temurin:8-jre-alpine
+
 MAINTAINER Alexander Lukyanchikov <sqshq@sqshq.com>
 
 ADD ./target/config.jar /app/
