@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: config-service
-        image: asha515/piggymetrics-config-service:20251130-100155-c70d307
+        image: asha515/piggymetrics-config-service:20251130-102929-1ebdf20
         ports:
         - containerPort: 8888
         env:
