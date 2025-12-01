@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Auto-reconnect port-forwards
 while true; do kubectl port-forward svc/gateway 7070:80 -n piggymetricss; sleep 2; done &
 
 while true; do kubectl port-forward -n argocd service/argocd-server 8443:443; sleep 2; done &

@@ -2,13 +2,11 @@
 # kind: Ingress
 # metadata:
 #   name: piggymetrics-ingress
-#   namespace: ingress-nginx
-#   annotations:
-#     nginx.ingress.kubernetes.io/rewrite-target: /
+#   namespace: piggymetricss
 # spec:
+#   ingressClassName: nginx
 #   rules:
-#   - host: localhost
-#     http:
+#   - http:
 #       paths:
 #       - path: /
 #         pathType: Prefix
@@ -17,10 +15,3 @@
 #             name: gateway
 #             port:
 #               number: 80
-#       # - path: /abc
-#       #   pathType: Prefix
-#       #   backend:
-#       #     service:
-#       #       name: monitoring
-#       #       port:
-#       #         number: 80
