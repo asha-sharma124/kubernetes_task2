@@ -19,7 +19,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-  #  if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     
     steps:
     - name: Checkout code
@@ -51,7 +51,7 @@ jobs:
         TAG=${{ steps.tag.outputs.tag }}
         DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
         
-       
+        # Build and push each service
         services=("auth-service" "account-service" "statistics-service" "notification-service" "gateway:gateway" "config:config-service" "registry:registry-service" "monitoring" "turbine-stream-service")
         
         for service in "${services[@]}"; do
@@ -73,7 +73,7 @@ jobs:
         TAG=${{ steps.tag.outputs.tag }}
         DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
         
-        
+        # Update all manifest files
         sed -i "s|image: asha515/piggymetrics-auth-service:.*|image: $DOCKER_USER/piggymetrics-auth-service:$TAG|g" kubernetes-manifests/08-auth-service.yaml
         sed -i "s|image: asha515/piggymetrics-account-service:.*|image: $DOCKER_USER/piggymetrics-account-service:$TAG|g" kubernetes-manifests/09-account-service.yaml
         sed -i "s|image: asha515/piggymetrics-statistics-service:.*|image: $DOCKER_USER/piggymetrics-statistics-service:$TAG|g" kubernetes-manifests/10-statistics-service.yaml
@@ -86,11 +86,13 @@ jobs:
 
     - name: Commit and push changes
       run: |
-        git config --local user.email "ashasharma08708@gmail.com"
-        git config --local user.name "asha-sharma124"
-        git add .
-
-        git commit -m " Update Docker images to tag: ${{ steps.tag.outputs.tag }}"
-        git push origin main
-        
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add kubernetes-manifests/
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "[skip ci] Update Docker images to tag: ${{ steps.tag.outputs.tag }}"
+          git push origin main
+        fi
 
