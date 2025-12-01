@@ -6,8 +6,6 @@ metadata:
 spec:
   serviceName: auth-mongodb
   replicas: 1
-  updateStrategy:
-    type: OnDelete
   selector:
     matchLabels:
       app: auth-mongodb
@@ -18,8 +16,7 @@ spec:
     spec:
       containers:
       - name: auth-mongodb
-        image: sqshq/piggymetrics-mongodb:latest
-        imagePullPolicy: IfNotPresent
+        image: sqshq/piggymetrics-mongodb
         ports:
         - containerPort: 27017
         env:
@@ -49,8 +46,6 @@ metadata:
 spec:
   serviceName: account-mongodb
   replicas: 1
-  updateStrategy:
-    type: OnDelete
   selector:
     matchLabels:
       app: account-mongodb
@@ -61,8 +56,7 @@ spec:
     spec:
       containers:
       - name: account-mongodb
-        image: sqshq/piggymetrics-mongodb:latest
-        imagePullPolicy: IfNotPresent
+        image: sqshq/piggymetrics-mongodb
         ports:
         - containerPort: 27017
         env:
@@ -94,8 +88,6 @@ metadata:
 spec:
   serviceName: statistics-mongodb
   replicas: 1
-  updateStrategy:
-    type: OnDelete
   selector:
     matchLabels:
       app: statistics-mongodb
@@ -106,8 +98,7 @@ spec:
     spec:
       containers:
       - name: statistics-mongodb
-        image: sqshq/piggymetrics-mongodb:latest
-        imagePullPolicy: IfNotPresent
+        image: sqshq/piggymetrics-mongodb
         ports:
         - containerPort: 27017
         env:
@@ -137,8 +128,6 @@ metadata:
 spec:
   serviceName: notification-mongodb
   replicas: 1
-  updateStrategy:
-    type: OnDelete
   selector:
     matchLabels:
       app: notification-mongodb
@@ -149,8 +138,7 @@ spec:
     spec:
       containers:
       - name: notification-mongodb
-        image: sqshq/piggymetrics-mongodb:latest
-        imagePullPolicy: IfNotPresent
+        image: sqshq/piggymetrics-mongodb
         ports:
         - containerPort: 27017
         env:
