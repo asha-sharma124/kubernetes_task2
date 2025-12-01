@@ -50,8 +50,7 @@ jobs:
       run: |
         TAG=${{ steps.tag.outputs.tag }}
         DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
-        
-        # Build and push each service
+       
         services=("auth-service" "account-service" "statistics-service" "notification-service" "gateway:gateway" "config:config-service" "registry:registry-service" "monitoring" "turbine-stream-service")
         
         for service in "${services[@]}"; do
@@ -73,7 +72,7 @@ jobs:
         TAG=${{ steps.tag.outputs.tag }}
         DOCKER_USER=${{ secrets.DOCKER_USERNAME }}
         
-        # Update all manifest files
+     
         sed -i "s|image: asha515/piggymetrics-auth-service:.*|image: $DOCKER_USER/piggymetrics-auth-service:$TAG|g" kubernetes-manifests/08-auth-service.yaml
         sed -i "s|image: asha515/piggymetrics-account-service:.*|image: $DOCKER_USER/piggymetrics-account-service:$TAG|g" kubernetes-manifests/09-account-service.yaml
         sed -i "s|image: asha515/piggymetrics-statistics-service:.*|image: $DOCKER_USER/piggymetrics-statistics-service:$TAG|g" kubernetes-manifests/10-statistics-service.yaml
@@ -89,10 +88,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add kubernetes-manifests/
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-        else
-          git commit -m "[skip ci] Update Docker images to tag: ${{ steps.tag.outputs.tag }}"
-          git push origin main
-        fi
+        git commit -m "[skip ci] Update Docker images to tag: ${{ steps.tag.outputs.tag }}"
+        git push origin main
+        
 
