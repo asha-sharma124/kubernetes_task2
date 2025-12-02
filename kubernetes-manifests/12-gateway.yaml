@@ -22,7 +22,7 @@ spec:
         command: ['sh', '-c', 'until nc -z registry-service.piggymetricss.svc.cluster.local 8761; do echo waiting for registry; sleep 5; done']
       containers:
       - name: gateway
-        image: asha515/piggymetrics-gateway:20251201-093847-f0fbdff
+        image: asha515/piggymetrics-gateway:20251201-100720-cfa7dba
         ports:
         - containerPort: 4000
         env:
